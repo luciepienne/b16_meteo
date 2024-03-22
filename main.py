@@ -9,17 +9,17 @@ from meteo_api import get_fc_from_meteofrance
 
 from config import DBNAME, USER, PASSWORD, HOST, PORT
 
-department_name = "hérault"
+department_number = '34'
 table_name = "forecast_weather"
 
 cur, conn = connect_to_db(DBNAME, USER, PASSWORD, HOST, PORT)
 
 create_table_weather_fc(table_name, cur)
 
-cities = fetch_cities(department_name, cur)
+cities = fetch_cities(department_number, cur)
 
 for city in cities:
-    longitude, latitude, label, department_name = city
+    longitude, latitude, label, department_number = city
     forecasts = get_fc_from_meteofrance(latitude, longitude)
     insert_forecasts(forecasts, city, table_name, cur, conn)
 

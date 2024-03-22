@@ -3,14 +3,14 @@ from datetime import datetime
 # get all needed data on table city
 
 
-def fetch_cities(department_name, cur):
+def fetch_cities(department_number, cur):
     cur.execute(
         """
-        SELECT longitude, latitude, label, department_name
+        SELECT longitude, latitude, label, department_number
             FROM cities
-            WHERE department_name = %s;
+            WHERE department_number = %s;
             """,
-        (department_name,),
+        (department_number,),
     )
     cities_data = cur.fetchall()
     return cities_data
@@ -24,7 +24,7 @@ def create_table_weather_fc(table_name, cur):
         CREATE TABLE IF NOT EXISTS {} (
             id SERIAL PRIMARY KEY,
             loaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            department_name VARCHAR(100),
+            department_number INT,
             label_dt_key VARCHAR(100),
             label VARCHAR(100),
             longitude FLOAT,
@@ -47,7 +47,7 @@ def create_table_weather_fc(table_name, cur):
 
 
 def insert_forecasts(data, city_data, table_name, cur, conn):
-    longitude, latitude, label, department_name = city_data
+    longitude, latitude, label, department_number = city_data
     for item in data:
         dt = item["dt"]
         temperature = item["T"]["value"]
@@ -64,7 +64,7 @@ def insert_forecasts(data, city_data, table_name, cur, conn):
 
         cur.execute(
             """
-                INSERT INTO {table_name} (longitude, latitude, label, department_name, label_dt_key, dt, temperature, humidity, sea_level, wind_speed, wind_gust, wind_direction, weather_icon, weather_desc)
+                INSERT INTO {table_name} (longitude, latitude, label, department_number, label_dt_key, dt, temperature, humidity, sea_level, wind_speed, wind_gust, wind_direction, weather_icon, weather_desc)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (id) DO NOTHING;
             """.format(
@@ -74,7 +74,7 @@ def insert_forecasts(data, city_data, table_name, cur, conn):
                 longitude,
                 latitude,
                 label,
-                department_name,
+                department_number,
                 label_dt_key,
                 dt,
                 temperature,
