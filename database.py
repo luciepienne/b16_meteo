@@ -29,7 +29,7 @@ def create_table_weather_fc(table_name, cur):
             label VARCHAR(100),
             longitude FLOAT,
             latitude FLOAT,                  
-            dt BIGINT,
+            dt TIMESTAMP,
             temperature FLOAT,
             humidity INT,
             sea_level FLOAT,
@@ -65,7 +65,7 @@ def insert_forecasts(data, city_data, table_name, cur, conn):
         cur.execute(
             """
                 INSERT INTO {table_name} (longitude, latitude, label, department_number, label_dt_key, dt, temperature, humidity, sea_level, wind_speed, wind_gust, wind_direction, weather_icon, weather_desc)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                VALUES (%s, %s, %s, %s, %s, TO_TIMESTAMP(%s), %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (id) DO NOTHING;
             """.format(
                 table_name=table_name

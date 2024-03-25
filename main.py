@@ -7,10 +7,10 @@ from database import (
 )
 from meteo_api import get_fc_from_meteofrance
 
-from config import DBNAME, USER, PASSWORD, HOST, PORT
+from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC
 
 department_number = '34'
-table_name = "forecast_weather"
+table_name = TABLE_NAME_FC
 
 cur, conn = connect_to_db(DBNAME, USER, PASSWORD, HOST, PORT)
 
