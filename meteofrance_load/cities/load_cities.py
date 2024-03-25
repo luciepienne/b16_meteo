@@ -1,6 +1,6 @@
 import psycopg2
 import json
-from config import DBNAME, USER, PASSWORD, HOST, PORT
+from b16_meteo.github.config import DBNAME, USER, PASSWORD, HOST, PORT
 
 # Connect to PostgreSQL
 conn = psycopg2.connect(

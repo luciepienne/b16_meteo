@@ -1,5 +1,5 @@
 import pytest
-from meteo_api import get_fc_from_meteofrance
+from b16_meteo.github.meteofrance_load.meteo_api import get_fc_from_meteofrance
 
 def test_meteo_api():
     lat = 43.450990329

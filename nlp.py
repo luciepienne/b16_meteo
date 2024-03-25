@@ -2,12 +2,12 @@ import requests
 import logging
 import base64
 
-from config import MY_KEY
-from connect import connect_to_db
-from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC
+from meteofrance_load.connect import connect_to_db
+from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, MY_KEY
 
 logger = logging.getLogger(__name__)
 cur, conn = connect_to_db(DBNAME, USER, PASSWORD, HOST, PORT)
+table_name = TABLE_NAME_FC
 
 # Check if my_key is empty or missing
 if not MY_KEY or MY_KEY == "":
@@ -19,7 +19,8 @@ if not MY_KEY or MY_KEY == "":
 headers = {"Authorization": f"Bearer {MY_KEY}"}
 
 
-def fetch_forecast_for_city(cur, table_name, city, date, hour=None):
+def fetch_forecast_for_city(city, date, hour=None):
+    
     if hour is None:
         timestamp = date
         query = f"""
@@ -54,11 +55,8 @@ def fetch_forecast_for_city(cur, table_name, city, date, hour=None):
         result += "\n".join([f"{column} {value}" for column, value in zip(columns, row)]) + "\n"
     return result.strip()
 
-test = fetch_forecast_for_city(cur, TABLE_NAME_FC, 'montpellier', '2024-03-26', 13)
-print(test)
-
-def get_text_from_forecast(cur, table_name, city: str, date: str, hour = None) -> str:
-    data = fetch_forecast_for_city(cur, table_name, city, date, hour = None)
+def get_text_from_forecast(city: str, date: str, hour = None) -> str:
+    data = fetch_forecast_for_city(city, date, hour = None)
 
     provider = "meta"
     url = "https://api.edenai.run/v2/text/chat"
@@ -74,7 +72,7 @@ def get_text_from_forecast(cur, table_name, city: str, date: str, hour = None) -
 
     try:
         response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()  # Raise error for non-200 responses
+        response.raise_for_status() 
         logger.info("Request sent to EdenAI's assistant successfully")
         result = response.json()
         rp = result[provider]
@@ -86,9 +84,9 @@ def get_text_from_forecast(cur, table_name, city: str, date: str, hour = None) -
 
 
 
-def get_speach_from_text(answer: str) -> None:
+def get_speach_from_text(answer: str, city: str, date: str, hour= None) -> None:
+        
     url = "https://api.edenai.run/v2/audio/text_to_speech"
-
     providers = "google"
     language = "en-US"
     payload = {
@@ -106,19 +104,24 @@ def get_speach_from_text(answer: str) -> None:
         audio_data = result.get('google', {}).get('audio')
         if audio_data:
             audio_bytes = base64.b64decode(audio_data)
-            with open("audio.mp3", "wb") as audio_file:
+            if hour is None: 
+                filename = f"audio_{city}_{date}.mp3"
+            else:
+                filename = f"audio_{city}_{date}_{hour}.mp3"
+
+            with open(filename, "wb") as audio_file:
                 audio_file.write(audio_bytes)
-            print("Audio file downloaded : audio.mp3")
+            print(f"Audio file downloaded: {filename}")
         else:
             print("No audio availible.")
     else:
         print(f"Failed to fetch response : {response.status_code} - {response.text}")
 
 
-text = get_text_from_forecast(cur, TABLE_NAME_FC, 'montpellier', '2024-03-26', 13)
+text = get_text_from_forecast('montpellier', '2024-03-26', 13)
 print(text)
 
-get_speach_from_text(text)
+get_speach_from_text(text, 'montpellier', '2024-03-26', 13)
 
 
 

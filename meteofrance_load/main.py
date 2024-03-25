@@ -6,6 +6,12 @@ from database import (
     delete_old_forecasts_1h,
 )
 from meteo_api import get_fc_from_meteofrance
+import sys
+import os
+
+# Append the parent directory of your package to the Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 
 from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC
 
