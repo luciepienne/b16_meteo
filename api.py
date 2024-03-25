@@ -16,14 +16,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.get("/forecast")
 async def forecast(city: str, date: str, hour: Optional[int] = None):
     try:
         text = get_text_from_forecast(city, date, hour)  # Pass the hour argument
         audio_file = get_speach_from_text(text, city, date, hour)
-        return {"audio_file": audio_file, "audio_link": f"<a href='{audio_file}'>Download Audio</a>"}
+        return {
+            "audio_file": audio_file,
+            "audio_link": f"<a href='{audio_file}'>Download Audio</a>",
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # Run the API with uvicorn
 if __name__ == "__main__":

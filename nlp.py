@@ -20,7 +20,7 @@ headers = {"Authorization": f"Bearer {MY_KEY}"}
 
 
 def fetch_forecast_for_city(city, date, hour=None):
-    
+
     if hour is None:
         timestamp = date
         query = f"""
@@ -52,11 +52,15 @@ def fetch_forecast_for_city(city, date, hour=None):
     cities_data = cur.fetchall()
     result = ""
     for row in cities_data:
-        result += "\n".join([f"{column} {value}" for column, value in zip(columns, row)]) + "\n"
+        result += (
+            "\n".join([f"{column} {value}" for column, value in zip(columns, row)])
+            + "\n"
+        )
     return result.strip()
 
-def get_text_from_forecast(city: str, date: str, hour = None) -> str:
-    data = fetch_forecast_for_city(city, date, hour = None)
+
+def get_text_from_forecast(city: str, date: str, hour=None) -> str:
+    data = fetch_forecast_for_city(city, date, hour=None)
 
     provider = "meta"
     url = "https://api.edenai.run/v2/text/chat"
@@ -72,7 +76,7 @@ def get_text_from_forecast(city: str, date: str, hour = None) -> str:
 
     try:
         response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status() 
+        response.raise_for_status()
         logger.info("Request sent to EdenAI's assistant successfully")
         result = response.json()
         rp = result[provider]
@@ -83,9 +87,8 @@ def get_text_from_forecast(city: str, date: str, hour = None) -> str:
         return ""
 
 
+def get_speach_from_text(answer: str, city: str, date: str, hour=None) -> None:
 
-def get_speach_from_text(answer: str, city: str, date: str, hour= None) -> None:
-        
     url = "https://api.edenai.run/v2/audio/text_to_speech"
     providers = "google"
     language = "en-US"
@@ -94,17 +97,17 @@ def get_speach_from_text(answer: str, city: str, date: str, hour= None) -> None:
         "language": language,
         "option": "MALE",
         "text": answer,
-        "fallback_providers": ""
+        "fallback_providers": "",
     }
 
     response = requests.post(url, json=payload, headers=headers)
 
     if response.status_code == 200:
         result = response.json()
-        audio_data = result.get('google', {}).get('audio')
+        audio_data = result.get("google", {}).get("audio")
         if audio_data:
             audio_bytes = base64.b64decode(audio_data)
-            if hour is None: 
+            if hour is None:
                 filename = f"audio_{city}_{date}.mp3"
             else:
                 filename = f"audio_{city}_{date}_{hour}.mp3"
@@ -118,10 +121,7 @@ def get_speach_from_text(answer: str, city: str, date: str, hour= None) -> None:
         print(f"Failed to fetch response : {response.status_code} - {response.text}")
 
 
-text = get_text_from_forecast('montpellier', '2024-03-26', 13)
+text = get_text_from_forecast("montpellier", "2024-03-26", 13)
 print(text)
 
-get_speach_from_text(text, 'montpellier', '2024-03-26', 13)
-
-
-
+get_speach_from_text(text, "montpellier", "2024-03-26", 13)
