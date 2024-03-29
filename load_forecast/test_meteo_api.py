@@ -1,5 +1,4 @@
-import pytest
-from b16_meteo.github.meteofrance_load.meteo_api import get_fc_from_meteofrance
+from load_forecast_api import get_fc_from_meteofrance
 
 
 def test_meteo_api():

@@ -1,4 +1,4 @@
-from meteo_api import get_fc_from_meteofrance
+from load_forecast_api import get_fc_from_meteofrance
 import sys
 import os
 
@@ -6,25 +6,30 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from prog_bar import print_progress_bar
-from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC
+from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, TABLE_NAME_CITY
 from connect import connect_to_db
-from database import (
+from batch_functions import (
+    create_table_cities_lat_long,
     fetch_cities,
     create_table_weather_fc,
     insert_forecasts,
     delete_old_forecasts_1h,
 )
-occitanie = ['09', '11', '12', '30', '31', '32', '34'] 
-
+# department = ['09', '11', '12', '30', '31', '32', '34'] 
+department = ['58'] #department in cities_light : '58', '39' quelques villes : vosbles valfin, champvert, epiry, lormes
 table_name = TABLE_NAME_FC
+city_table_name = TABLE_NAME_CITY
 
 cur, conn = connect_to_db(DBNAME, USER, PASSWORD, HOST, PORT)
 
+create_table_cities_lat_long(city_table_name, cur,conn)
+
 create_table_weather_fc(table_name, cur)
 
-for idx, department_number in enumerate(occitanie):
+for idx, department_number in enumerate(department):
     cities = fetch_cities(department_number, cur)
-    print_progress_bar(idx + 1, len(occitanie), prefix=f'Department {idx + 1}/{len(occitanie)}', suffix='Complete', length=50)
+    print_progress_bar(idx + 1, len(department), prefix=f'Department {idx + 1}/{len(department)}', suffix='Complete', length=50)
+    
     for city in cities:
         longitude, latitude, label, city_department_number = city
         forecasts = get_fc_from_meteofrance(latitude, longitude)
