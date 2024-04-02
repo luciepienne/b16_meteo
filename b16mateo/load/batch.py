@@ -16,7 +16,7 @@ from batch_functions import (
     delete_old_forecasts_1h,
 )
 # department = ['09', '11', '12', '30', '31', '32', '34'] 
-department = ['58'] #department in cities_light : '58', '39' quelques villes : vosbles valfin, champvert, epiry, lormes
+department = ['34', '09', '11', '12', '30', '31', '32'] 
 table_name = TABLE_NAME_FC
 city_table_name = TABLE_NAME_CITY
 
@@ -27,7 +27,7 @@ create_table_cities_lat_long(city_table_name, cur,conn)
 create_table_weather_fc(table_name, cur)
 
 for idx, department_number in enumerate(department):
-    cities = fetch_cities(department_number, cur)
+    cities = fetch_cities(city_table_name, department_number, cur)
     print_progress_bar(idx + 1, len(department), prefix=f'Department {idx + 1}/{len(department)}', suffix='Complete', length=50)
     
     for city in cities:

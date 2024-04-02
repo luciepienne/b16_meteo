@@ -118,12 +118,13 @@ def get_speach_from_text(answer: str, city: str, date: str, hour=None):
                 filename = f"audio_{city}_{date}.mp3"
             else:
                 filename = f"audio_{city}_{date}_{hour}.mp3"
-            
-            storage_dir = "../forecast_storage/audio"
-            if not os.path.exists(storage_dir):
-                os.makedirs(storage_dir)
+            print(f'filename: {filename}')
+            #storage_dir = "../forecast_storage/audio"
+            # if not os.path.exists(storage_dir):
+            #     os.makedirs(storage_dir)
 
-            with open(os.path.join(storage_dir, filename), "wb") as audio_file:
+            # with open(os.path.join(storage_dir, filename), "wb") as audio_file:
+            with open(f"audio/{filename}", "wb") as audio_file:    
                 audio_file.write(audio_bytes)
             print(f"Audio file downloaded: {filename}")
             return filename

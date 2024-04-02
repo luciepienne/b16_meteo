@@ -1,9 +1,5 @@
 import json
 
-#create the table cities_lat_long if not exists
-
-import json
-
 def create_table_cities_lat_long(city_table_name, cur, conn):
     try:
         # Check if the table exists
@@ -86,13 +82,13 @@ def create_table_cities_lat_long(city_table_name, cur, conn):
 
 
 #get all longitude and latitudes for a given department
-def fetch_cities(department_number, cur):
+def fetch_cities(city_table_name, department_number, cur):
     cur.execute(
         """
         SELECT longitude, latitude, label, department_number
-            FROM cities_lat_long
-            WHERE department_number = %s;
-            """,
+        FROM {}
+        WHERE department_number = %s;
+        """.format(city_table_name),
         (department_number,),
     )
     cities_data = cur.fetchall()
