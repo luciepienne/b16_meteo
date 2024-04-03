@@ -1,9 +1,13 @@
 import json
 
+
 def create_table_cities_lat_long(city_table_name, cur, conn):
     try:
         # Check if the table exists
-        cur.execute("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = %s)", (city_table_name,))
+        cur.execute(
+            "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = %s)",
+            (city_table_name,),
+        )
         table_exists = cur.fetchone()[0]
 
         if not table_exists:
@@ -79,16 +83,16 @@ def create_table_cities_lat_long(city_table_name, cur, conn):
         print(f"Error: {e}")
 
 
-
-
-#get all longitude and latitudes for a given department
+# get all longitude and latitudes for a given department
 def fetch_cities(city_table_name, department_number, cur):
     cur.execute(
         """
         SELECT longitude, latitude, label, department_number
         FROM {}
         WHERE department_number = %s;
-        """.format(city_table_name),
+        """.format(
+            city_table_name
+        ),
         (department_number,),
     )
     cities_data = cur.fetchall()
@@ -121,6 +125,7 @@ def create_table_weather_fc(table_name, cur):
     )
 
     cur.execute(query)
+
 
 # insert the forecasts for a given city in the table
 def insert_forecasts(data, city_data, table_name, cur, conn):

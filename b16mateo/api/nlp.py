@@ -118,13 +118,13 @@ def get_speach_from_text(answer: str, city: str, date: str, hour=None):
                 filename = f"audio_{city}_{date}.mp3"
             else:
                 filename = f"audio_{city}_{date}_{hour}.mp3"
-            print(f'filename: {filename}')
-            #storage_dir = "../forecast_storage/audio"
+            print(f"filename: {filename}")
+            # storage_dir = "../forecast_storage/audio"
             # if not os.path.exists(storage_dir):
             #     os.makedirs(storage_dir)
 
             # with open(os.path.join(storage_dir, filename), "wb") as audio_file:
-            with open(f"audio/{filename}", "wb") as audio_file:    
+            with open(f"audio/{filename}", "wb") as audio_file:
                 audio_file.write(audio_bytes)
             print(f"Audio file downloaded: {filename}")
             return filename
@@ -138,5 +138,3 @@ def get_speach_from_text(answer: str, city: str, date: str, hour=None):
 # print(text)
 # text = "C'est l'été, mais pas trop chaud, ici à Montpellier. Pluies éparses tout au long de la journée. Il est recommandé de se munir d'un parapluie et de vêtements chauds pour sortir."
 # get_speach_from_text(text, "moulis", "2024-03-29", 13)
-
-
