@@ -4,7 +4,7 @@ d#!/bin/bash
 cd ~/simplon/briefs/b16_meteo/github/
 
 # Authenticate to the Azure Container Registry
-docker login lpb16mateo.azurecr.io -u lpb16mateo -p "PQl8igDwvfq7Wsab74G3OUFRBS+i0hzIUR3eJrhsUq+ACRC5aQRB"
+docker login lpb16mateo.azurecr.io -u lpb16mateo -p "XXX"
 
 # Build and push the b16-connect image
 cd b16mateo/conndb
