@@ -3,6 +3,7 @@ cities.json
 cities_light.json
 key.py
 *.mp3
+deploy.sh
 
 
 
