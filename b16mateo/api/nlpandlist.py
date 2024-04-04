@@ -9,7 +9,16 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from connect import connect_to_db
-from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, TABLE_NAME_CITY, MY_KEY
+from config import (
+    DBNAME,
+    USER,
+    PASSWORD,
+    HOST,
+    PORT,
+    TABLE_NAME_FC,
+    TABLE_NAME_CITY,
+    MY_KEY,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -96,7 +105,6 @@ def get_text_from_forecast(city: str, date: str, hour=None) -> str:
 
 
 def get_speach_from_text(answer: str, city: str, date: str, hour=None):
-
     url = "https://api.edenai.run/v2/audio/text_to_speech"
     providers = "google"
     language = "en-US"
@@ -154,7 +162,8 @@ def get_list_cities_with_forecasts():
     except Exception as e:
         print("Error:", e)
         return None
-    
+
+
 def get_cities_with_forecasts_department(department_number):
     try:
         query = f"""
@@ -168,14 +177,15 @@ def get_cities_with_forecasts_department(department_number):
         return cities_with_forecasts_departement
     except Exception as e:
         print("Error:", e)
-        return None 
-    
-citylist = get_cities_with_forecasts_department(34)
-print(citylist)
+        return None
 
-#1st try but timing response too long with name of department & number of department 
 
-#def get_list_departments_with_forecasts():
+# citylist = get_cities_with_forecasts_department(34)
+# print(citylist)
+
+# 1st try but timing response too long with name of department & number of department
+
+# def get_list_departments_with_forecasts():
 #     try:
 #         query = f"""
 #             SELECT DISTINCT t.department_number, c.department_name
@@ -188,6 +198,7 @@ print(citylist)
 #     except Exception as e:
 #         print("Error:", e)
 #         return None
+
 
 def get_list_departments_with_forecasts():
     try:
@@ -202,4 +213,6 @@ def get_list_departments_with_forecasts():
     except Exception as e:
         print("Error:", e)
         return None
-print(get_list_departments_with_forecasts())
+
+
+# print(get_list_departments_with_forecasts())

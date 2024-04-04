@@ -17,7 +17,7 @@ from batch_functions import (
 )
 
 # department = ['09', '11', '12', '30', '31', '32', '34']
-department = ["34", "09", "11", "12", "30", "31", "32"]
+department = ["34", "09"]
 table_name = TABLE_NAME_FC
 city_table_name = TABLE_NAME_CITY
 
