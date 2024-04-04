@@ -9,12 +9,13 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from connect import connect_to_db
-from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, MY_KEY
+from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, TABLE_NAME_CITY, MY_KEY
 
 
 logger = logging.getLogger(__name__)
 cur, conn = connect_to_db(DBNAME, USER, PASSWORD, HOST, PORT)
 table_name = TABLE_NAME_FC
+city_table_name = TABLE_NAME_CITY
 
 # Check if my_key is empty or missing
 if not MY_KEY or MY_KEY == "":
@@ -74,7 +75,7 @@ def get_text_from_forecast(city: str, date: str, hour=None) -> str:
     payload = {
         "providers": provider,
         "text": data,
-        "chatbot_global_action": f"Act as weather forecast guy, remind the {city}",
+        "chatbot_global_action": f"Act as weather forecast guy, remind the {city}. Keep it under 40 words.",
         "previous_history": [],
         "temperature": 0.0,
         "max_tokens": 150,
@@ -134,7 +135,71 @@ def get_speach_from_text(answer: str, city: str, date: str, hour=None):
         print(f"Failed to fetch response : {response.status_code} - {response.text}")
 
 
-# text = get_text_from_forecast("moulis", "2024-03-29", 13)
+# text = get_text_from_forecast("balaruc les bains", "2024-04-06", 2)
 # print(text)
-# text = "C'est l'été, mais pas trop chaud, ici à Montpellier. Pluies éparses tout au long de la journée. Il est recommandé de se munir d'un parapluie et de vêtements chauds pour sortir."
-# get_speach_from_text(text, "moulis", "2024-03-29", 13)
+# text = "Here's your weather forecast for Balaruc-les-Bains, France. speed of 5.0 km/h, with gusts of up to 11.0 km/h. The sea level will be around 1023-102."
+# get_speach_from_text(text, "balaruc les bains", "2024-04-06", 2)
+
+
+def get_list_cities_with_forecasts():
+    try:
+        query = f"""
+            SELECT DISTINCT label
+            FROM {table_name}
+            ORDER BY label ASC
+        """
+        cur.execute(query)
+        cities_with_forecasts = cur.fetchall()
+        return cities_with_forecasts
+    except Exception as e:
+        print("Error:", e)
+        return None
+    
+def get_cities_with_forecasts_department(department_number):
+    try:
+        query = f"""
+            SELECT DISTINCT label
+            FROM {table_name}
+            WHERE department_number = {department_number}
+            ORDER BY label ASC
+        """
+        cur.execute(query)
+        cities_with_forecasts_departement = cur.fetchall()
+        return cities_with_forecasts_departement
+    except Exception as e:
+        print("Error:", e)
+        return None 
+    
+citylist = get_cities_with_forecasts_department(34)
+print(citylist)
+
+#1st try but timing response too long with name of department & number of department 
+
+#def get_list_departments_with_forecasts():
+#     try:
+#         query = f"""
+#             SELECT DISTINCT t.department_number, c.department_name
+#             FROM {table_name} t
+#             JOIN {city_table_name} c ON t.department_number::varchar = c.department_number
+#         """
+#         cur.execute(query)
+#         department_with_forecasts = cur.fetchall()
+#         return department_with_forecasts
+#     except Exception as e:
+#         print("Error:", e)
+#         return None
+
+def get_list_departments_with_forecasts():
+    try:
+        query = f"""
+            SELECT DISTINCT department_number
+            FROM {table_name}
+            ORDER BY department_number
+        """
+        cur.execute(query)
+        department_with_forecasts = cur.fetchall()
+        return department_with_forecasts
+    except Exception as e:
+        print("Error:", e)
+        return None
+print(get_list_departments_with_forecasts())

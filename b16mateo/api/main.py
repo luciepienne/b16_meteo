@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 import uvicorn
 
-from nlp import get_text_from_forecast, get_speach_from_text
+from nlpandlist import get_text_from_forecast, get_speach_from_text, get_list_cities_with_forecasts, get_cities_with_forecasts_department, get_list_departments_with_forecasts
 
 
 app = FastAPI()
@@ -30,6 +30,35 @@ async def forecast(city: str, date: str, hour: int = None):
         return FileResponse(audio_path)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/departmentwithforecasts")
+async def departmentwithforecast():
+    try:
+        dptlist = get_list_departments_with_forecasts()
+        print(dptlist)
+        return dptlist
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/citieswithforecastsdept")
+async def citieswithforecastsdpt(department_number: int):
+    try:
+        citylist = get_cities_with_forecasts_department(department_number)
+        print(citylist)
+        return citylist
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.get("/citieswithforecasts")
+async def citieswithforecasts():
+    try:
+        citylist = get_list_cities_with_forecasts()
+        print(citylist)
+        return citylist
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
 
 
 # Run the API with uvicorn
