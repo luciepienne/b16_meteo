@@ -84,7 +84,7 @@ def get_text_from_forecast(city: str, date: str, hour=None) -> str:
     payload = {
         "providers": provider,
         "text": data,
-        "chatbot_global_action": f"Act as weather forecast guy, remind the {city}. Keep it under 40 words.",
+        "chatbot_global_action": f"Act as weather forecast guy, remind the {city}. Make a short text which sum up the day. Keep it under 40 words.",
         "previous_history": [],
         "temperature": 0.0,
         "max_tokens": 150,

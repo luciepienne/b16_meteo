@@ -16,8 +16,8 @@ from batch_functions import (
     delete_old_forecasts_1h,
 )
 
-# department = ['09', '11', '12', '30', '31', '32', '34']
-department = ["34", "09"]
+# department = ['9', '11', '12', '30', '31', '32', '34']
+department = ["34", "30", "11"]
 table_name = TABLE_NAME_FC
 city_table_name = TABLE_NAME_CITY
 
