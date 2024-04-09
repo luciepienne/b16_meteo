@@ -3,45 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mateo your weather speaking assistant</title>
+    <title>⛈️ ☀️ Mateo 🌥️ your 🌈weather 🌬️ speaking ❄️assistant ⛈️ c</title>
     <link rel="stylesheet" href="styles.css" />
     <!-- Include CSS for styling -->
   </head>
   <body>
     <div class="container">
-      <h1 class="title">Select a city and the date</h1>
+      <h1 class="title">
+        ☀️ Mateo, 🌧️ your personal 🌈weather assistant will ☀️ tell you the
+        weather🌦️
+      </h1>
       <form id="forecastForm" class="form">
         <div class="form-group">
-          <label for="city">City:</label>
+          <label for="city">🏙️ City:</label>
           <input type="text" id="city" name="city" autocomplete="off" />
           <div id="citySuggestions" class="autocomplete-suggestions"></div>
         </div>
-
         <div class="form-group">
-          <label for="date">Date:</label>
+          <label for="date">📅 Date:</label><br />
+          <input
+            type="radio"
+            id="today"
+            name="dateOption"
+            value="today"
+            checked
+          />
+          <label for="today">Today</label><br />
+          <input
+            type="radio"
+            id="tomorrow"
+            name="dateOption"
+            value="tomorrow"
+          />
+          <label for="tomorrow">Tomorrow</label><br />
+          <input type="radio" id="weekend" name="dateOption" value="weekend" />
+          <label for="weekend">This Weekend</label><br />
+          <input
+            type="radio"
+            id="chooseDate"
+            name="dateOption"
+            value="chooseDate"
+          />
+          <label for="chooseDate">Choose a date in the coming days</label><br />
           <input
             type="date"
             id="date"
             name="date"
+            style="display: none"
             min="<?php echo date('Y-m-d'); ?>"
-            max="<?php echo date('Y-m-d', strtotime('+72 hours')); ?>"
+            max="<?php echo date('Y-m-d', strtotime('+7 days')); ?>"
           />
         </div>
 
         <div class="form-group">
-          <label for="hour"
-            >Want to know what is planned for a precise hour ? Choose it
+          <label for="hour">
+            ⏰ Want to know what is planned for a precise hour? Choose it
             here:</label
           >
           <input type="number" id="hour" name="hour" min="0" max="23" />
         </div>
 
-        <button type="submit" class="btn">Get your forecast here</button>
+        <button type="submit" class="btn">🔍 Get your forecast here</button>
+        <span id="loadingMessage" style="display: none">Loading...</span>
       </form>
 
       <audio id="audioPlayer" controls style="display: none"></audio>
     </div>
 
-    <script src="js/scriptlocal.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>

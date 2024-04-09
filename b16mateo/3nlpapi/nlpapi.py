@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 
 
-
 from nlpandlist import (
     get_text_from_forecast,
     get_speach_from_text,
@@ -71,5 +70,5 @@ async def citieswithforecasts():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8002)
 
+    uvicorn.run(app, host="0.0.0.0", port=8002)
