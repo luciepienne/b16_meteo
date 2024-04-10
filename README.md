@@ -9,47 +9,51 @@ normally all is accessible wordwild/
 ## Table of Contents
 
 1. [Overview](#overview)
-2. [How to Run](#how-to-run) -[Create the config.py](#create-config.py-file) -[Run deploy.sh](#change-and-run-deploy.sh-file)
+2. [How to Run](#how-to-run)
+   [Create the config.py](#create-config.py-file)
+   [Run deploy.sh](#change-and-run-deploy.sh-file)
 3. [Different interesting points](#different-interesting-points)
 4. [Notes](#notes)
 
 ---
 
+```bash
 b16mateo/
 │
+├── 1conndb/ #connexion to postgress
+│     └── Dockerfile
+│
+├── 2load/ #will load datas from meteofrance and structure postgres db
+│     ├── .dockerignore
+│     ├── batch_functions.py
+│     ├── bacth.py
+│     ├── cities_light.json #a json file with a sample of cities
+│     ├── config.py #to be created and integrated
+│     ├── connect.py
+│     ├── Dockerfile
+│     ├── load_forecast_api.py
+│     ├── prog_bar.py
+│     └── test_meteo_api.py
+│
+├── 3nlpapi/ #(will generate text with meteofranceforecast and audio from text
+│     ├── audio
+│     │ └── audio_montpellier_2024-04-10.mp3 #example
+│     ├── config.py #to be created and integrated
+│     ├── connect.py
+│     ├── Dockerfile
+│     ├── nlpandlist.py
+│     └── nlpapi.py
+│
+├──4front/
+│     ├── js
+│     │   └── script.js #change the azure domainname in line 47 and 92
+│     ├── Dockerfile
+│     ├── index.html
+│     └── styles.css
 ├── README.md
-├── deploy.sh
-│
-├── 1conndb/ (connexion to postgress)
-│ └── Dockerfile
-│
-├── 2load/ (will load datas from meteofrance and structure postgres db)
-│ ├── .dockerignore
-│ ├── batch_functions.py
-│ ├── bacth.py
-│ ├── cities_light.json (a json file with a sample of cities)
-│ ├── config.py (to be created and integrated)
-│ ├── connect.py
-│ ├── Dockerfile
-│ ├── load_forecast_api.py
-│ ├── prog_bar.py
-│ └── test_meteo_api.py
-│
-├── 3nlpapi/ (will generate text with meteofranceforecast and audio from text)
-│ ├── audio
-│ │ └── audio_montpellier_2024-04-10.mp3 (example)  
-│ ├── config.py (to be created and integrated)
-│ ├── connect.py
-│ ├── Dockerfile
-│ ├── nlpandlist.py
-│ └── nlpapi.py
-│
-└── 4front/
-├── js
-│ └── script.js (change the azure domainname in line 47 and 92)
-├── Dockerfile
-├── index.html
-└── styles.css
+└── deploy.sh
+
+```
 
 ## Overview
 
