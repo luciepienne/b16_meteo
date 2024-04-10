@@ -1,12 +1,9 @@
-from load_forecast_api import get_fc_from_meteofrance
 import sys
 import os
 
 # Append the parent directory of your package to the Python path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from prog_bar import print_progress_bar
-from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, TABLE_NAME_CITY
 from connect import connect_to_db
 from batch_functions import (
     create_table_cities_lat_long,
@@ -15,9 +12,13 @@ from batch_functions import (
     insert_forecasts,
     delete_old_forecasts_1h,
 )
+from load_forecast_api import get_fc_from_meteofrance
+from prog_bar import print_progress_bar
+from config import DBNAME, USER, PASSWORD, HOST, PORT, TABLE_NAME_FC, TABLE_NAME_CITY
+
 
 # department = ['9', '11', '12', '30', '31', '32', '34']
-department = ["34", "30", "11"]
+department = ["34", "30", "11", "12"]
 table_name = TABLE_NAME_FC
 city_table_name = TABLE_NAME_CITY
 
